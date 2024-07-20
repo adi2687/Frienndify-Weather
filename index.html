@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city name">
+            <button>
+                <img src="search.png" alt="Search">
+            </button>
+        </div>
+        
+        <div class="error"></div>
+        <div class="weather">
+            <img src="" class="weatherimage">
+            <h1 class="temp">32degc</h1>
+            <h2 class="city">ajmer</h2>
+            <div class="col">
+                <div class="feelslike">36degc</div>
+            </div>
+                <div class="class">clouds</div>
+            <div class="detail">
+                
+                
+                <div class="col">
+                    <img src="humidity.png" alt="Humidity Icon" id="humidityimage">
+                    <div>
+                        <p class="humidity">15%</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="wind.png" alt="Wind Icon" id="windimage">
+                    <div>
+
+                        <p class="wind">17km/h</p>
+                        <!-- <p class="windeg">12deg</p> -->
+                    </div>
+                </div>
+                
+            </div>
+            <div class="sun">
+                <div class="sunrise">12</div>
+                <div class="sunset">13</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const search = document.querySelector('.search');
+        const temp = document.querySelector('.temp');
+        const city = document.querySelector('.city');
+        const humidity = document.querySelector('.humidity');
+        const wind = document.querySelector('.wind');
+        const input = search.querySelector("input");
+        const button = search.querySelector("button");
+        const feels_like = document.querySelector(".feelslike");
+        const apiKey = "fc3b1eb09d67c9ebd2d39e4fc7d2bb41";
+        const class3 = document.querySelector(".class");
+        const sunrise = document.querySelector(".sunrise");
+        const sunset = document.querySelector(".sunset");
+        const windeg = document.querySelector(".windeg");
+        const error = document.querySelector(".error");
+        const image = document.querySelector(".weather img");
+        const windimage = document.getElementById("windimage");
+        const humidityimage = document.getElementById("humidityimage");
+        windimage.style.display = "none";
+        humidityimage.style.display = "none";
+
+        async function checkWeather(cityName) {
+            const api = `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${cityName}&appid=${apiKey}`;
+            const response = await fetch(api);
+            const data = await response.json();
+            if (response.status == 404) {
+                error.textContent = "Oops!!! City not found. Check the name again.";
+                temp.textContent = "";
+                feels_like.textContent = "";
+                city.textContent = "";
+                humidity.textContent = "";
+                wind.textContent = "";
+                class3.textContent = "";
+                sunrise.textContent = "";
+                sunset.textContent = "";
+                windeg.textContent = "";
+                image.src = "";
+                windimage.style.display = "none";
+                humidityimage.style.display = "none";
+            } else {
+                image.style.width="15   0px";
+                image.style.height="140px";
+                error.textContent = "";
+                temp.textContent = Math.round(data.main.temp) + "°C";
+                feels_like.textContent = "Feels Like: " + data.main.feels_like + "°C";
+                city.textContent = data.name + ", " + data.sys.country;
+                humidity.textContent =  + data.main.humidity + "%" +"Humidity: ";
+                wind.textContent = Math.floor(data.wind.speed * 3.6) + " km/h" + " Wind Speed: ";
+                class3.textContent = "Weather: " + data.weather[0].main;
+                sunrise.textContent = "Sunrise: " + new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+                sunset.textContent = "Sunset: " + new Date(data.sys.sunset * 1000).toLocaleTimeString();
+                image.src = getImageForWeather(data.weather[0].main);
+                humidityimage.style.display = "block";
+                windimage.style.display = "block";
+            }
+        }
+
+        function getImageForWeather(weather) {
+            switch (weather.toLowerCase()) {
+                case "clear":
+                    return "clear.png";
+                case "clouds":
+                    return "clouds.png";
+                case "rain":
+                    return "rain.png";
+                case "snow":
+                    return "snow.png";
+                case "thunderstorm":
+                    return "thunderstormmain.jpg";
+                case "drizzle":
+                    return "drizzle.png";
+                case "mist":
+                    return "mist.png";
+                case "haze":
+                    return "haze.png";
+                case "fog":
+                    return "fog.png";
+                default:
+                    return "default.png";
+            }
+        }
+
+        button.addEventListener("click", () => {
+            const cityName = input.value;
+            checkWeather(cityName);
+        });
+
+        // Check initial weather for Delhi
+        checkWeather(cityName);
+    </script>
+</body>
+
+</html>
