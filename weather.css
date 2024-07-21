@@ -190,7 +190,9 @@ header img{
     width:60px;
     height:60px
 }
-
+::-webkit-scrollbar{
+    width:0px
+}
 @media screen and (max-width:830px) {
     .card {
         width: 100%
@@ -215,5 +217,12 @@ header img{
 
     .city {
         font-size: 120%
+    }
+    body{
+        background-color: cyan;
+        background-repeat: repeat;
+    }
+    .card{
+        margin-top:30%
     }
 }

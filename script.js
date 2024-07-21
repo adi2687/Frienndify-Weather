@@ -123,7 +123,7 @@ function getImageForWeather(weather) {
         case "snow":
             return "snow.png";
         case "thunderstorm":
-            return "thunderstormmain.jpg";
+            return "thunderstormmain.png";
         case "drizzle":
             return "drizzlemain.png";
         case "mist":
